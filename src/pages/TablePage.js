@@ -1,8 +1,7 @@
+import React, { useEffect, useState } from "react";
 import Table from "../components/Table";
 import { Typography, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { useEffect } from "react";
-
 const { confirm } = Modal;
 const { Title } = Typography;
 
@@ -31,70 +30,78 @@ const data = [
     rate: 110,
   },
   {
-    name: "PHP",
+    name: "Ruby",
     rate: 90,
   },
   {
     rate: 120,
     name: "React",
   },
+  {
+    name: "Vue1",
+    rate: 130,
+  },
+  {
+    name: "Angular1",
+    rate: 110,
+  },
+  {
+    name: "PHP1",
+    rate: 90,
+  },
+  {
+    rate: 120,
+    name: "Reac1",
+  },
+  {
+    name: "Vue2",
+    rate: 130,
+  },
+  {
+    name: "Angular2",
+    rate: 110,
+  },
+  {
+    name: "PHP2",
+    rate: 90,
+  },
+  {
+    rate: 120,
+    name: "React2",
+  },
+  {
+    rate: 120,
+    name: "Reac3",
+  }
 ];
 
 const TablePage = () => {
-  const addMoreData = (setRowState) => {
-    data.push(...getMoreItems(10));
-    setRowState(data)
-    console.log(data,"==============");
-  };
-  const getMoreItems = (count, offset = Math.max.apply(Math, data.map(function(o) { return o.rate; }))+1) =>{
-    
+  const [dataRow, setDataRow] = useState(data);
+
+  const getMoreItems = (count, offset) => {
     return Array.from({ length: count }, (v, k) => k).map((k) => ({
-        name: `NAME${k + offset}`,
-        rate: k + offset,
-        selected: false,
-      }));
-  }
-    
+      name: `NAME${k + offset}`,
+      rate: k + offset,
+      selected: false,
+    }));
+  };
 
-  
-  
- 
-
-  const handleSorting = (sortingMode, column) => {
-    if (sortingMode.mode === "asc") {
-      data.sort((a, b) => {
-        var columnA = a[column];
-        var columnB = b[column];
-        if (columnA < columnB) {
-          return -1;
-        }
-        if (columnA > columnB) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      data.sort((a, b) => {
-        var columnA = a[column];
-        var columnB = b[column];
-        if (columnA < columnB) {
-          return 1;
-        }
-        if (columnA > columnB) {
-          return -1;
-        }
-
-        return 0;
-      });
-    }
+  const handleSorting = (sortingMode, column,setRowState) => {
+    let notSorted = [...dataRow];
+    let sorted = notSorted.sort((a, b) => {
+      if (a[column] < b[column]) {
+        return sortingMode.mode === "asc" ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return sortingMode.mode === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    setRowState( sorted);
   };
   const handleRemoveItems = (rowState, setRowState) => {
-    console.log(setRowState, "setRowStatesetRowStatesetRowState");
     let selected = rowState.filter((el) => el.selected === true);
-    console.log(selected, "selected", rowState, "rowState");
     let newRowData = rowState.filter((item) => !selected.includes(item));
-
-    console.log(newRowData, "NEWWEWEW");
     if (selected.length > 0) {
       confirm({
         title: "Do you Want to delete these items?",
@@ -110,7 +117,6 @@ const TablePage = () => {
       confirm({
         title: "No items are selected!",
         icon: <ExclamationCircleOutlined />,
-        // content: "Some descriptions",
         onOk() {
           console.log("OK");
         },
@@ -121,18 +127,49 @@ const TablePage = () => {
     }
   };
 
+  const fetchMoreData = (e, rowState, setRowState) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom) {
+      let array = [...rowState];
+      const offset =
+        Math.max.apply(
+          Math,
+          array.map((o) => o.rate)
+        ) + 1;
+
+      const data = getMoreItems(20, offset);
+
+      setRowState((prev) => [...prev, ...data]);
+      setDataRow(rowState);
+    }
+  };
+
   const handleShowItem = (item) => {
-    console.log(item, "ITTTEEEM");
+    confirm({
+      title: "Here is the item that you selected?",
+      icon: <ExclamationCircleOutlined />,
+      content: `(Name: ${item.name}, Rate: ${item.rate})`,
+      onOk() {
+        
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+   
   };
   return (
     <div className="table-page">
       <Title> React Table</Title>
       <Table
         headers={headers}
-        data={data}
-        onScroll={(setRowState)=>addMoreData(setRowState)}
+        data={dataRow}
+        onScroll={(e, rowState, setRowState) =>
+          fetchMoreData(e, rowState, setRowState)
+        }
         onItemClick={(item) => handleShowItem(item)}
-        onFilter={(sortingMode, column) => handleSorting(sortingMode, column)}
+        onFilter={(sortingMode, column,setRowState) => handleSorting(sortingMode, column,setRowState)}
         onRemoveItems={(items, setRowState) =>
           handleRemoveItems(items, setRowState)
         }

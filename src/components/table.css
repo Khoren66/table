@@ -15,11 +15,10 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-/* .table-style {
-  border-style: solid;
-  border-color: rgb(10, 3, 1);
-  border-width: 1px;
-} */
+.table-style {
+height: 500px;
+overflow-y: scroll;
+}
 tbody tr:hover {
   background-color: #ffff99;
 }

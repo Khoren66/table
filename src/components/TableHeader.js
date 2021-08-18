@@ -5,9 +5,7 @@ import {
   SortAscendingOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Menu, Dropdown, Modal } from "antd";
-
-const { confirm } = Modal;
+import { Menu, Dropdown } from "antd";
 
 const TableHeader = ({
   handleSort,
