@@ -58,7 +58,8 @@ const data = [
 - In the header near the checkbox, you can see **more icon** which will show a dropdown for removing 
 - If you scroll down table will autogenerate fake 20 more rows
 
-
+## myLib documentation
+See the host URL [www.table.com](https://khoren66.github.io/table/)
 
 
 
