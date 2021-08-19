@@ -11,7 +11,7 @@ const Table = ({
   onFilter,
   onRemoveItems,
 }) => {
-  const [rowState, setRowState] = useState(data);
+  const [selectedRows, setSelectedRows] = useState({});
   const [headerState, setHeaderState] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
   const [sortingMode, setSortingMode] = useState({
@@ -20,31 +20,24 @@ const Table = ({
   });
 
   useEffect(() => {
-    data.map((o) => (o.selected = false));
+    let res = data.reduce((o, key) => ({ ...o, [key.name]: false }), {});
+    setSelectedRows(res);
     setHeaderState(headers);
-  }, []);
+  }, [data]);
 
   const handleSelectAll = () => {
     setCheckAll(!checkAll);
-    rowState.map((r) => {
-      if (!checkAll) {
-        r.selected = true;
-      } else {
-        r.selected = false;
-      }
+    let rows = { ...selectedRows };
+    Object.entries(rows).forEach(([k, v]) => {
+      !checkAll ? (rows[k] = true) : (rows[k] = false);
     });
-    setRowState(rowState);
+    setSelectedRows(rows);
   };
 
   const handleSelectRow = (e) => {
     const { name, checked } = e.target;
-    rowState.map((r) => {
-      if (r.name === name) {
-        r.selected = checked;
-      }
-    });
-    let newState = [...rowState];
-    setRowState(newState);
+    selectedRows[name] = checked;
+    setSelectedRows({ ...selectedRows, [selectedRows[name]]: checked });
   };
 
   const handleSort = (column, mode) => {
@@ -53,33 +46,31 @@ const Table = ({
     } else {
       setSortingMode({ mode: "asc", column: column });
     }
-    onFilter(sortingMode, column, setRowState);
+    onFilter(sortingMode, column);
   };
 
   return (
-    <div
-      className="table-style"
-      onScroll={(e) => onScroll(e, rowState, setRowState)}
-    >
+    <div className="table-style" onScroll={(e) => onScroll(e)}>
       <table className="mytable">
         <thead>
           <TableHeader
             onRemoveItems={onRemoveItems}
-            setRowState={setRowState}
             handleSort={handleSort}
             sortingMode={sortingMode}
             handleSelectAll={handleSelectAll}
             checkAll={checkAll}
-            rowState={rowState}
+            selectedRows={selectedRows}
+            data={data}
             headerState={headerState}
           />
         </thead>
         <tbody>
-          {rowState &&
-            rowState.map((rowData, rowIndex) => (
+          {data &&
+            data.map((rowData, rowIndex) => (
               <TableBody
                 class="tabel-body"
                 rowData={rowData}
+                selectedRows={selectedRows}
                 rowIndex={rowIndex}
                 headerState={headerState}
                 handleSelectRow={handleSelectRow}

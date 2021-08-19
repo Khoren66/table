@@ -5,22 +5,32 @@ const TableBody = ({
   rowIndex,
   onItemClick,
   headerState,
+  selectedRows,
   handleSelectRow,
 }) => {
   return (
-    <tr onClick={() => onItemClick(rowData)}>
+    <tr key={rowIndex}>
       <td>
-        <input
-          value={rowData.selected}
-          checked={rowData.selected}
-          name={rowData.name}
-          onChange={(e) => handleSelectRow(e, rowData.selected, rowIndex)}
-          type="checkbox"
-        ></input>
+        {headerState &&
+          headerState.map((column, index) =>
+            selectedRows[rowData[column.dataIndex]] !== undefined ? (
+              <input
+                value={selectedRows[rowData[column.dataIndex]]}
+                checked={selectedRows[rowData[column.dataIndex]]}
+                name={rowData[column.dataIndex]}
+                onChange={(e) => handleSelectRow(e, rowData.selected, rowIndex)}
+                type="checkbox"
+              ></input>
+            ) : (
+              ""
+            )
+          )}
       </td>
       {headerState &&
         headerState.map((column, index) => (
-          <td> {rowData[column.dataIndex]}</td>
+          <td onClick={() => onItemClick(rowData)}>
+            {rowData[column.dataIndex]}
+          </td>
         ))}
     </tr>
   );

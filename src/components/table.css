@@ -18,7 +18,9 @@ tr:nth-child(even) {
   display: flex;
   align-items: center;
 }
-
+.mytable{
+  height: 510px;
+}
 .table-style {
   height: 500px;
   overflow-y: scroll;
