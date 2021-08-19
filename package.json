@@ -2,7 +2,7 @@
   "homepage": "https://Khoren66.github.io/table",
   "name": "table",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@ant-design/compatible": "^1.0.8",
     "@testing-library/jest-dom": "^5.11.4",
