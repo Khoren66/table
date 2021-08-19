@@ -53,14 +53,13 @@ const Table = ({
     } else {
       setSortingMode({ mode: "asc", column: column });
     }
-    onFilter(sortingMode, column,setRowState);
+    onFilter(sortingMode, column, setRowState);
   };
 
   return (
     <div
       className="table-style"
       onScroll={(e) => onScroll(e, rowState, setRowState)}
-      style={{ display: "flex", justifyContent: "center" }}
     >
       <table className="mytable">
         <thead>

@@ -3,7 +3,6 @@ import {
   MoreOutlined,
   SortDescendingOutlined,
   SortAscendingOutlined,
-  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { Menu, Dropdown } from "antd";
 
@@ -15,13 +14,11 @@ const TableHeader = ({
   sortingMode,
   rowState,
   setRowState,
-  onRemoveItems
+  onRemoveItems,
 }) => {
-
- 
   const menu = (
     <Menu>
-      <Menu.Item onClick={() => onRemoveItems(rowState,setRowState)} key="1">
+      <Menu.Item onClick={() => onRemoveItems(rowState, setRowState)} key="1">
         <a>Remove Selected</a>
       </Menu.Item>
     </Menu>
@@ -30,7 +27,7 @@ const TableHeader = ({
   return (
     <tr>
       <th width="15px">
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className="table-header-checkbox">
           <input
             onClick={handleSelectAll}
             defaultChecked={checkAll}

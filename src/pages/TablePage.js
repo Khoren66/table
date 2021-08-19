@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Table from "../components/Table";
 import { Typography, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
@@ -72,7 +72,7 @@ const data = [
   {
     rate: 120,
     name: "Reac3",
-  }
+  },
 ];
 
 const TablePage = () => {
@@ -86,7 +86,7 @@ const TablePage = () => {
     }));
   };
 
-  const handleSorting = (sortingMode, column,setRowState) => {
+  const handleSorting = (sortingMode, column, setRowState) => {
     let notSorted = [...dataRow];
     let sorted = notSorted.sort((a, b) => {
       if (a[column] < b[column]) {
@@ -97,7 +97,7 @@ const TablePage = () => {
       }
       return 0;
     });
-    setRowState( sorted);
+    setRowState(sorted);
   };
   const handleRemoveItems = (rowState, setRowState) => {
     let selected = rowState.filter((el) => el.selected === true);
@@ -150,14 +150,11 @@ const TablePage = () => {
       title: "Here is the item that you selected?",
       icon: <ExclamationCircleOutlined />,
       content: `(Name: ${item.name}, Rate: ${item.rate})`,
-      onOk() {
-        
-      },
+      onOk() {},
       onCancel() {
         console.log("Cancel");
       },
     });
-   
   };
   return (
     <div className="table-page">
@@ -169,7 +166,9 @@ const TablePage = () => {
           fetchMoreData(e, rowState, setRowState)
         }
         onItemClick={(item) => handleShowItem(item)}
-        onFilter={(sortingMode, column,setRowState) => handleSorting(sortingMode, column,setRowState)}
+        onFilter={(sortingMode, column, setRowState) =>
+          handleSorting(sortingMode, column, setRowState)
+        }
         onRemoveItems={(items, setRowState) =>
           handleRemoveItems(items, setRowState)
         }
