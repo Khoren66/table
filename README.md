@@ -55,7 +55,7 @@ const data = [
 ```
 
 - Each column can have sorting by changing value **sorter** in **headers**
-- In the header near the checkbox you can see **more icon** which will show dropdown dor removing selected rows
+- In the header near the checkbox, you can see **more icon** which will show a dropdown for removing 
 - If you scroll down table will autogenerate fake 20 more rows
 
 
