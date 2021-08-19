@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/" component={TablePage} />
+          <Route exact path="/table" component={TablePage} />
         </Switch>
       </Router>
     </div>
