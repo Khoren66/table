@@ -1,13 +1,7 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import TablePage from "./pages/TablePage";
-
-
 
 function App() {
   return (
