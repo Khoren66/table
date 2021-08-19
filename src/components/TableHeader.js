@@ -12,13 +12,13 @@ const TableHeader = ({
   handleSelectAll,
   headerState,
   sortingMode,
-  rowState,
-  setRowState,
+  data,
+  selectedRows,
   onRemoveItems,
 }) => {
   const menu = (
     <Menu>
-      <Menu.Item onClick={() => onRemoveItems(rowState, setRowState)} key="1">
+      <Menu.Item onClick={() => onRemoveItems(selectedRows)} key="1">
         <a>Remove Selected</a>
       </Menu.Item>
     </Menu>

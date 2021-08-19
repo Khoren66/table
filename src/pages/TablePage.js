@@ -78,15 +78,14 @@ const data = [
 const TablePage = () => {
   const [dataRow, setDataRow] = useState(data);
 
-  const getMoreItems = (count, offset) => {
+  const getMoreItems = (count, offset = 1) => {
     return Array.from({ length: count }, (v, k) => k).map((k) => ({
       name: `NAME${k + offset}`,
       rate: k + offset,
-      selected: false,
     }));
   };
 
-  const handleSorting = (sortingMode, column, setRowState) => {
+  const handleSorting = (sortingMode, column) => {
     let notSorted = [...dataRow];
     let sorted = notSorted.sort((a, b) => {
       if (a[column] < b[column]) {
@@ -97,51 +96,41 @@ const TablePage = () => {
       }
       return 0;
     });
-    setRowState(sorted);
+    setDataRow(sorted);
   };
-  const handleRemoveItems = (rowState, setRowState) => {
-    let selected = rowState.filter((el) => el.selected === true);
-    let newRowData = rowState.filter((item) => !selected.includes(item));
-    if (selected.length > 0) {
-      confirm({
-        title: "Do you Want to delete these items?",
-        icon: <ExclamationCircleOutlined />,
-        onOk() {
-          setRowState(newRowData);
-        },
-        onCancel() {
-          console.log("Cancel");
-        },
-      });
-    } else {
-      confirm({
-        title: "No items are selected!",
-        icon: <ExclamationCircleOutlined />,
-        onOk() {
-          console.log("OK");
-        },
-        onCancel() {
-          console.log("Cancel");
-        },
-      });
-    }
+  const handleRemoveItems = (items) => {
+    let selected = dataRow.filter((el) => items[el.name] === true);
+    let newDataRow = dataRow.filter((item) => !selected.includes(item));
+    confirm({
+      title: [
+        selected.length > 0
+          ? "Do you Want to delete these items?"
+          : "No items are selected!",
+      ],
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        return selected.length > 0 ? setDataRow(newDataRow) : "";
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
-  const fetchMoreData = (e, rowState, setRowState) => {
+  const fetchMoreData = (e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
     if (bottom) {
-      let array = [...rowState];
+      let array = [...dataRow];
       const offset =
         Math.max.apply(
           Math,
           array.map((o) => o.rate)
         ) + 1;
-
-      const data = getMoreItems(20, offset);
-
-      setRowState((prev) => [...prev, ...data]);
-      setDataRow(rowState);
+      const data =
+        offset !== -Infinity ? getMoreItems(20, offset) : getMoreItems(20);
+      console.log(data);
+      setDataRow((prev) => [...prev, ...data]);
     }
   };
 
@@ -162,16 +151,10 @@ const TablePage = () => {
       <Table
         headers={headers}
         data={dataRow}
-        onScroll={(e, rowState, setRowState) =>
-          fetchMoreData(e, rowState, setRowState)
-        }
+        onScroll={(e) => fetchMoreData(e)}
         onItemClick={(item) => handleShowItem(item)}
-        onFilter={(sortingMode, column, setRowState) =>
-          handleSorting(sortingMode, column, setRowState)
-        }
-        onRemoveItems={(items, setRowState) =>
-          handleRemoveItems(items, setRowState)
-        }
+        onFilter={(sortingMode, column) => handleSorting(sortingMode, column)}
+        onRemoveItems={(items) => handleRemoveItems(items)}
       />
     </div>
   );
